@@ -1,0 +1,19 @@
+# Modelos de voz (se descargan con fuentes/comun/instalar_modelos.sh)
+modelos/
+
+# Salidas temporales de los scripts
+.trabajo/
+__pycache__/
+*.pyc
+node_modules/
+fuentes/serviciosocial/audio/
+fuentes/serviciosocial/.partes/
+fuentes/serviciosocial/prueba_*.jpg
+
+# Documentos originales con datos personales: NUNCA se suben
+originales/
+fuentes/*/docs/*.pdf
+fuentes/*/docs/*.png
+fuentes/*/docs/*.jpg
+
+.DS_Store
