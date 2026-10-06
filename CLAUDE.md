@@ -75,9 +75,15 @@ Primero, una vez por sesión: `bash fuentes/comun/instalar_modelos.sh` (dependen
 
 ## Dominio
 
-`docs/CNAME` contiene el dominio propio cuando ya está configurado. DNS en el registrador: `www` CNAME → `examenes-estandarizados.github.io`;
-dominio raíz con registros A `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`.
-El dominio está verificado en la organización de GitHub. "Enforce HTTPS" activado en Settings → Pages.
+Dominio propio: **examenesestandarizados.com** (registrado en Cloudflare por Williams). `docs/CNAME` lo conecta con GitHub Pages;
+no borre ese archivo. `examenes-estandarizados.github.io` redirige solo al dominio.
+
+DNS en Cloudflare (todo en **DNS only**, nube gris; con la nube naranja falla el certificado HTTPS de GitHub):
+- `@` A → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` (y AAAA `2606:50c0:8000::153` … `8003::153`)
+- `www` CNAME → `examenes-estandarizados.github.io`
+- TXT `_github-pages-challenge-examenes-estandarizados` (verificación del dominio en la organización de GitHub)
+
+Los repositorios viejos (`egel-plus-fit`, `PASE-DE-EXAMEN-CENEVAL-FIT`, `ServicioSocial` en la cuenta de Williams) solo redirigen aquí; no los edite.
 
 ## Pendientes conocidos
 
