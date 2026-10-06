@@ -82,5 +82,3 @@ El dominio está verificado en la organización de GitHub. "Enforce HTTPS" activ
 ## Pendientes conocidos
 
 - Cambiar la voz del EXANI-II a Kokoro `ef_dora` para que las tres guías suenen igual.
-- Servicio Social: difuminar la firma del Director General de Servicios Escolares y los folios con código de barras en los
-  formatos de ejemplo (`fuentes/serviciosocial/img/d1.jpg`–`d4.jpg`) y volver a grabar el video.
