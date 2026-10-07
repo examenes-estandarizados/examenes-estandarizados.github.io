@@ -24,8 +24,7 @@ Quien hace los cambios es Williams (TI de la Facultad). Responda en español y c
 - **Sin fechas ni años** (cambian en cada convocatoria). El costo del EGEL ($1,750.00) va **solo en pantalla**, no en la voz.
 - **Pronunciación en la voz** (mapa `SPEECH` en `fuentes/comun/voz/render.py`): UAT → "Guat"; EGEL → "Ejel";
   `cenevalfit@uat.edu.mx` → "ceneval fit, arroba, guat, punto edu, punto eme equis"; la CCT `28MSU0010B` se deletrea.
-- **Voz:** Kokoro, voz `ef_dora`, español latino (`es-419`), natural y con entusiasmo. Servicio Social y EGEL ya la usan;
-  el EXANI-II todavía usa Piper (pendiente cambiarlo para que las tres suenen igual).
+- **Voz:** Kokoro, voz `ef_dora`, español latino (`es-419`), natural y con entusiasmo. Las tres guías la usan (EGEL y EXANI-II se renderizan con `fuentes/comun/voz/render.py`).
 - **Videos sin descarga:** `<video controls controlsList="nodownload noplaybackrate" disablepictureinpicture oncontextmenu="return false;">`.
   No poner enlaces directos al MP4.
 - **Privacidad (repositorio público):** toda captura o documento se difumina antes de usarlo: nombres, CURP, matrícula, folios,
@@ -34,6 +33,12 @@ Quien hace los cambios es Williams (TI de la Facultad). Responda en español y c
 - **Identidad:** Montserrat; rojo `#ED1C24`, gris `#3A3A3A`, gris medio `#58585B`, gris claro `#E6E6E8`, rosa `#FCE9EA`.
   Páginas solo en modo claro. Encabezado con logos UAT + FIT, cortinilla de entrada y enlace "← Ver todas las guías".
 - **Contacto:** EXANI-II y EGEL Plus: `cenevalfit@uat.edu.mx`, 833 218 4714 · 833 307 0112. Servicio Social: `pizaguirre@uat.edu.mx`.
+
+### Datos fijos del EXANI-II
+- Programa/Carrera en el registro de CENEVAL (ingreso), **con la clave -33 y escrita exactamente así**; se muestran en la página y en el video
+  (Paso 1, cuando la voz dice elegir la carrera): `IC-33 INGENIERO CIVIL TAMPICO`, `ISC-33 INGENIERO EN SISTEMAS COMPUTACIONALES TAMPICO`,
+  `IN-33 INGENIERO EN NEGOCIOS TAMPICO`, `ICDIA-33 INGENIERO EN CIENCIA DE DATOS E INTELIGENCIA ARTIFICIAL TAMPICO`,
+  `IIS-33 INGENIERO INDUSTRIAL Y DE SISTEMAS TAMPICO`. (El EGEL Plus lleva otra lista, sin -33.)
 
 ### Datos fijos del EGEL Plus
 - Ventanilla de Cobros del **Edificio Administrativo 2** (el edificio central). Se pide "su pase de examen".
@@ -84,7 +89,3 @@ DNS en Cloudflare (todo en **DNS only**, nube gris; con la nube naranja falla el
 - TXT `_github-pages-challenge-examenes-estandarizados` (verificación del dominio en la organización de GitHub)
 
 Los repositorios viejos (`egel-plus-fit`, `PASE-DE-EXAMEN-CENEVAL-FIT`, `ServicioSocial` en la cuenta de Williams) solo redirigen aquí; no los edite.
-
-## Pendientes conocidos
-
-- Cambiar la voz del EXANI-II a Kokoro `ef_dora` para que las tres guías suenen igual.

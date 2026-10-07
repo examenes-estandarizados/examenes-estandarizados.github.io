@@ -6,14 +6,19 @@ La página publicada es `docs/exani/index.html`; el video es `docs/exani/registr
 ## Cómo volver a generar el video
 
 `fuentes/exani/fuente.html` es la versión animada del video (escenas, textos en pantalla y narración en `NARR`).
-Si cambia algún texto ahí, regenere el MP4:
+La voz es Kokoro `ef_dora` (la misma del EGEL Plus y del Servicio Social) y el render lo hace `fuentes/comun/voz/render.py`
+(config `exani`). Si cambia algún texto de `fuente.html`, regenere el MP4 (≈ 6 min):
 
 ```sh
-bash fuentes/comun/instalar_modelos.sh   # dependencias y modelos de voz
-python3 fuentes/exani/narracion.py fuentes/exani/fuente.html modelos/vits-piper-es_MX-claude-high/es_MX-claude-high.onnx .trabajo/exani/audio
-python3 fuentes/exani/linea_de_tiempo.py .trabajo/exani/audio
-node fuentes/exani/render.js fuentes/exani/fuente.html .trabajo/exani/audio/timeline.json .trabajo/exani/audio/voz.wav docs/exani/registro-exani-ii.mp4
+bash fuentes/comun/instalar_modelos.sh                 # una vez por sesión: dependencias y modelos
+python3 fuentes/comun/voz/render.py exani              # → .trabajo/exani/registro-exani-ii.mp4
+cp .trabajo/exani/registro-exani-ii.mp4 docs/exani/
 ```
 
-`render.js` necesita Playwright con Chromium y `ffmpeg`. La portada (`docs/exani/portada.jpg`) es un cuadro de la escena inicial sin subtítulo:
-use el mismo `render.js` con un último argumento de segundos (p. ej. `4`) y una línea de tiempo con los textos de la escena 0 vacíos.
+Después actualice la duración ("Duración m:ss") en `docs/exani/index.html` y en `docs/index.html`.
+
+Los elementos que aparecen justo cuando la voz dice una frase se definen en `overrides` de la config `exani` en `render.py`
+(escena, selector, frase; con un cuarto valor `'--h'` se define cuándo se oculta). Si cambia esa frase en `NARR`,
+actualice también el override o el render se detiene con "frase no encontrada". Este video no lleva cortinilla de entrada (`intro=0`).
+
+La portada (`docs/exani/portada.jpg`) es un cuadro de la escena inicial sin subtítulo: no cambia mientras no cambie esa escena.

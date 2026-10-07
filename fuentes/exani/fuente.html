@@ -226,6 +226,16 @@ body{
   75.3%,100%{opacity:1;top:262px;left:514px;width:192px;height:38px}
 }
 
+/* opciones de carrera sobre la captura del Paso 1 */
+.carov{position:absolute;left:3%;right:3%;bottom:16px;z-index:3;background:#fff;border-top:8px solid var(--rojo);border-radius:8px;
+  box-shadow:0 18px 50px rgba(0,0,0,.40);padding:12px 22px 12px;opacity:0}
+.scene.active .carov{animation:pop .7s cubic-bezier(.2,.9,.3,1) var(--d,0s) both, carout .5s ease var(--h,999s) forwards}
+@keyframes carout{to{opacity:0;visibility:hidden}}
+.carov h5{font-size:20px;font-weight:700;color:var(--gris);margin-bottom:6px;letter-spacing:.01em}
+.carov h5 b{color:var(--rojo)}
+.carov .r{display:flex;align-items:center;gap:14px;font-size:18px;font-weight:800;color:var(--gris);padding:4px 0;border-top:1px solid #EEE;letter-spacing:.01em}
+.carov .code{flex:none;min-width:96px;text-align:center;background:var(--gris);color:#fff;font-size:16px;font-weight:800;letter-spacing:.06em;padding:4px 8px;border-radius:5px}
+
 /* pilas de capturas */
 .stack{position:relative;width:1040px;height:600px}
 .stack .frame{position:absolute}
@@ -455,13 +465,21 @@ body.intro-on{overflow:hidden}
           <ul class="list">
             <li class="a-rise" style="--d:.5s"><b>Institución:</b> UAT Presencial o UAT EDC, según sea su caso</li>
             <li class="a-rise" style="--d:.75s"><b>Matrícula:</b> escríbala. Si desea consultarla, ingrese al <b>Portal de Aspirantes UAT</b> con su cuenta</li>
-            <li class="a-rise" style="--d:1s"><b>Programa/Carrera:</b> elija su carrera correctamente</li>
+            <li class="a-rise" style="--d:1s"><b>Programa/Carrera:</b> con el <em>nombre exacto</em></li>
             <li class="a-rise" style="--d:1.15s"><b>Campus:</b> <em>Facultad de Ingeniería</em></li>
             <li class="a-rise" style="--d:1.3s">Acepte el <b>aviso de privacidad</b> y dé clic en <em>Aceptar</em></li>
           </ul>
           <figure class="frame a-pop shotw" style="--d:.6s">
             <img data-img="s1" alt="Pantalla de bienvenida al registro en línea: institución, matrícula, carrera y campus">
             <span class="hl-move"></span>
+            <div class="carov" style="--d:11s;">
+              <h5>Programa/Carrera: elija la suya, <b>escrita exactamente así</b></h5>
+              <div class="r"><span class="code">IC-33</span>INGENIERO CIVIL TAMPICO</div>
+              <div class="r"><span class="code">ISC-33</span>INGENIERO EN SISTEMAS COMPUTACIONALES TAMPICO</div>
+              <div class="r"><span class="code">IN-33</span>INGENIERO EN NEGOCIOS TAMPICO</div>
+              <div class="r"><span class="code">ICDIA-33</span>INGENIERO EN CIENCIA DE DATOS E INTELIGENCIA ARTIFICIAL TAMPICO</div>
+              <div class="r"><span class="code">IIS-33</span>INGENIERO INDUSTRIAL Y DE SISTEMAS TAMPICO</div>
+            </div>
           </figure>
         </div>
       </div>
@@ -495,7 +513,7 @@ body.intro-on{overflow:hidden}
             <li class="a-rise" style="--d:1.25s">Su correo <b>en los dos espacios</b> y dé clic en <em>Siguiente</em></li>
           </ul>
           <figure class="frame a-pop shotw" style="--d:.6s">
-            <img data-img="s3" class="kb" style="--kbz:2.3;--kbx:0%;--kby:71%;--kbt:9s;--kbd:4s" alt="Formulario de datos personales">
+            <img data-img="s3" class="kb" style="--kbz:2.3;--kbx:0%;--kby:71%;--kbt:7s;--kbd:9.6s" alt="Formulario de datos personales">
           </figure>
         </div>
       </div>
@@ -767,7 +785,7 @@ var OFFSET = []; DUR.reduce(function(a,d,i){ OFFSET[i]=a; return a+d; },0);
 
 var NARR = [
 "Le damos la bienvenida a la guía paso a paso para registrarse en línea al EXANI-II de CENEVAL y obtener su pase de ingreso al examen.",
-"Ingrese al registro en línea de CENEVAL. En Institución, seleccione Universidad Autónoma de Tamaulipas Presencial, o EDC, según sea su caso. Escriba su matrícula. Si desea consultarla, ingrese al Portal de Aspirantes UAT con su cuenta. Elija correctamente su carrera y, en Campus, seleccione Facultad de Ingeniería. Después, acepte el aviso de privacidad y dé clic en Aceptar.",
+"Ingrese al registro en línea de CENEVAL. En Institución, seleccione Universidad Autónoma de Tamaulipas Presencial, o EDC, según sea su caso. Escriba su matrícula. Si desea consultarla, ingrese al Portal de Aspirantes UAT con su cuenta. En Programa o Carrera, elija su carrera escrita exactamente como aparece en pantalla. En Campus, seleccione Facultad de Ingeniería. Después, acepte el aviso de privacidad y dé clic en Aceptar.",
 "En la pantalla de instrucciones, dé clic en: Para continuar con el registro, hacer clic aquí.",
 "Llene sus datos personales tal como aparecen en su acta de nacimiento o CURP. Si es de nacionalidad mexicana, desmarque la casilla No soy mexicano y escriba su CURP. Complete su domicilio, sus teléfonos y su correo en los dos espacios. Después, dé clic en Siguiente.",
 "Aparecerá un recuadro de verificación. Revíselo con cuidado: si sus datos no son correctos, no tendrá derecho a presentar el examen. Si todo está bien, dé clic en Aceptar.",
