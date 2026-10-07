@@ -1,6 +1,6 @@
 """Convierte una página-video (HTML) en MP4 con narración (Kokoro, voz ef_dora, español latino).
-Uso: python3 fuentes/comun/voz/render.py egel [--probe]
-El MP4 queda en .trabajo/egel/; revíselo y cópielo a docs/egel/ para publicarlo.
+Uso: python3 fuentes/comun/voz/render.py egel|exani [--probe]
+El MP4 queda en .trabajo/<guía>/; revíselo y cópielo a docs/<guía>/ para publicarlo.
 """
 import sys, os, re, json, time, subprocess, asyncio, math
 from pathlib import Path
@@ -8,7 +8,7 @@ import numpy as np, soundfile as sf
 from playwright.async_api import async_playwright
 
 FPS = 30
-INTRO = 2.8          # segundos de cortina al inicio
+INTRO = 2.8          # segundos de cortina al inicio (cada guía puede cambiarlo con intro=...)
 LEAD, GAP, TAIL = 0.8, 0.35, 1.3
 SR = 24000
 
@@ -32,6 +32,16 @@ CONFIGS = {
                              (11, '.cct', 'Cuando le pidan'),
                              (13, '.warn', 'Después, imprímalo')],
                   boxes=[(512,114,474,40),(512,156,474,40),(512,197,474,40),(512,239,474,40),(642,280,214,42)]),
+  'exani':   dict(src=str(REPO/'fuentes'/'exani'/'fuente.html'), out=str(TRABAJO/'exani'/'registro-exani-ii.mp4'), intro=0,
+                  hl_scene=1, marks=["En Institución", "Escriba su matrícula", "En Programa o Carrera", "En Campus", "dé clic en Aceptar"],
+                  overrides=[(1, '.carov', 'En Programa o Carrera'), (1, '.carov', 'En Campus', '--h'),
+                             (4, '.warn', 'Si sus datos'),
+                             (5, '.stack > figure.frame:nth-of-type(2)', 'quedará confirmado'), (5, '.warn', 'Después, regrese'),
+                             (6, '.stack > figure.frame:nth-of-type(2)', 'Dé clic en llenar'),
+                             (7, '.hl-box', 'botón Continuar'),
+                             (9, '.hl-box:nth-of-type(1)', 'En destino elija'), (9, '.hl-box:nth-of-type(2)', 'dé clic en Guardar'),
+                             (9, '.warn', 'Guárdelo muy bien')],
+                  boxes=[(414,122,394,36),(414,157,394,36),(414,193,394,36),(414,228,394,36),(514,262,192,38)]),
 }
 
 SPEECH = [
@@ -41,6 +51,7 @@ SPEECH = [
   (r'cenevalfit@uat\.edu\.mx', 'ceneval fit, arroba, guat, punto edu, punto eme equis'),
   (r'28MSU0010B', 'dos, ocho, eme, ese, u, cero, cero, uno, cero, be'),
   (r'\bUAT\b', 'Guat'), (r'\bEDC\b', 'e, de, ce'), (r'\bPDF\b', 'pe de efe'),
+  (r'\bCURP\b', 'curp'),
   (r'\bPNG\b', 'pe ene ge'), (r'\bJPG\b', 'jota pe ge'), (r'CamScanner', 'Cam Scanner'),
 ]
 def speech_text(s):
@@ -164,7 +175,7 @@ async def open_page(p, html, durs, cues, extra_css):
         fit(); }""", [durs, cues])
     if OVR:
         await pg.evaluate("""(ov) => { var sc = document.querySelectorAll('.scene');
-            ov.forEach(function(o){ var el = sc[o[0]].querySelector(o[1]); if (el) el.style.setProperty('--d', o[2] + 's'); }); }""", OVR)
+            ov.forEach(function(o){ var el = sc[o[0]].querySelector(o[1]); if (el) el.style.setProperty(o[3] || '--d', o[2] + 's'); }); }""", OVR)
     return b, pg
 
 def ff_writer(path):
@@ -196,7 +207,9 @@ async def render_scenes(p, html, durs, cues, css, frames, ks, segdir, tag):
     await b.close()
 
 async def main(name, probe=False):
+    global INTRO
     cfg = CONFIGS[name]
+    INTRO = cfg.get('intro', INTRO)
     os.makedirs(os.path.dirname(cfg['out']), exist_ok=True)
     html = prepare_html(cfg)
     info = await page_info(html)
@@ -206,10 +219,10 @@ async def main(name, probe=False):
     css = hl_css(cfg, scenes)
     global OVR
     OVR = []
-    for k, sel, phrase in cfg.get('overrides', []):
+    for k, sel, phrase, *prop in cfg.get('overrides', []):    # prop (opcional): variable CSS distinta de --d
         for t, c, d in scenes[k]['timeline']:
             if phrase.lower() in c.lower():
-                OVR.append([k, sel, round(max(0.3, t + d * c.lower().index(phrase.lower()) / max(1, len(c)) - 0.15), 2)]); break
+                OVR.append([k, sel, round(max(0.3, t + d * c.lower().index(phrase.lower()) / max(1, len(c)) - 0.15), 2)] + prop); break
         else:
             raise ValueError(f'frase no encontrada: escena {k}: {phrase}')
     print('ajustes de aparición:', OVR, flush=True)
@@ -233,11 +246,11 @@ async def main(name, probe=False):
         if sa <= sb: A.append(k); sa += frames[k]
         else: B.append(k); sb += frames[k]
     async with async_playwright() as p:
-        await asyncio.gather(render_intro(p, html, durs, cues, css, f'{segdir}/intro.mp4'),
+        await asyncio.gather(*([render_intro(p, html, durs, cues, css, f'{segdir}/intro.mp4')] if INTRO else []),
                              render_scenes(p, html, durs, cues, css, frames, sorted(A), segdir, 'A'),
                              render_scenes(p, html, durs, cues, css, frames, sorted(B), segdir, 'B'))
     with open(f'{segdir}/list.txt', 'w') as f:
-        f.write(f"file '{segdir}/intro.mp4'\n")
+        if INTRO: f.write(f"file '{segdir}/intro.mp4'\n")
         for k in range(len(frames)): f.write(f"file '{segdir}/s{k:02d}.mp4'\n")
     subprocess.run(['ffmpeg','-loglevel','error','-y','-f','concat','-safe','0','-i',f'{segdir}/list.txt','-c','copy',base + '.video.mp4'], check=True)
     subprocess.run(['ffmpeg','-loglevel','error','-y','-i',base + '.video.mp4','-i',base + '.wav',
